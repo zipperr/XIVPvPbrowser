@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <title>xivpvp.html</title>
+</head>
+<body>
+    <form action="/" method="POST">
+        <table border="1">
+            <tr>
+                <th><p>id</p></th>
+                <th><p>rule</p></th>
+                <th><p>data</p></th>
+                <th><p>created</p></th>
+            </tr>
+            {% for d in data %}
+            <tr>
+                <th>{{d.id}}</th>
+                <th>{{d.contents}}</th>
+                <th>{{d.data}}</th>
+                <th>{{d.created}}</th>
+                <th><a href="/del_data/{{ d.id }}">[delete]</a></th>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>

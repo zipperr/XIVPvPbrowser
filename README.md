@@ -1,2 +1,2 @@
 # XIVPvPbrowser
-aa
+pythonいれてflaskをpipインストール
