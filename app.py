@@ -15,7 +15,7 @@ class GetData(db.Model):
     data = db.Column(db.Text, nullable=True)
     created = db.Column('created', DATETIME, default=datetime.now, nullable=False)
 
-@app.route('/')
+@app.route('/',methods = ['GET','POST'])
 def home():
     print(request.method)
     print(request.url)
@@ -29,7 +29,7 @@ def home():
         allReq = GetData.query.all()
         return render_template('xivpvp.html', data=allReq)
 
-@app.route('/<req>')
+@app.route('/<req>',methods = ['GET','POST'])
 def req(req):
     print(request.method)
     print(request.url)
