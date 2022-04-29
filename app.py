@@ -17,20 +17,34 @@ class GetData(db.Model):
 
 @app.route('/')
 def home():
-    allReq = GetData.query.all()
-    return render_template('xivpvp.html', data=allReq)
-
-@app.route('/<req>')
-def req(req):
+    print(request.method)
     print(request.url)
     print(request.headers)
     print(request.data)
     print(dict(request.args))
-    newReq = GetData(contents=req, data=str(request.data))
-    db.session.add(newReq)
-    db.session.commit()
-    allReq = GetData.query.all()
-    return render_template('xivpvp.html', data=allReq)
+
+    if request.method == "POST":
+        return "OKAY";
+    else:
+        allReq = GetData.query.all()
+        return render_template('xivpvp.html', data=allReq)
+
+@app.route('/<req>')
+def req(req):
+    print(request.method)
+    print(request.url)
+    print(request.headers)
+    print(request.data)
+    print(dict(request.args))
+
+    if request.method == "POST":
+        return "OKAY";
+    else:
+        newReq = GetData(contents=req, data=str(request.data))
+        db.session.add(newReq)
+        db.session.commit()
+        allReq = GetData.query.all()
+        return render_template('xivpvp.html', data=allReq)
 
 @app.route('/del_data/<int:id>')
 def del_data(id):
