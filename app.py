@@ -15,19 +15,26 @@ class GetData(db.Model):
     data = db.Column(db.Text, nullable=True)
     created = db.Column('created', DATETIME, default=datetime.now, nullable=False)
 
+@app.route('/frontline/',methods = ['POST'])
+def frontline():
+    print(request.get_data().decode('utf-8'))
+    newReq = GetData(contents='frontline', data=request.get_data().decode('utf-8'))
+    db.session.add(newReq)
+    db.session.commit()
+    return "OKAY";
+
+@app.route('/wolvesden/',methods =['POST'])
+def wolvesden():
+    print(request.get_data())
+    newReq = GetData(contents=frontline, data=request.get_data().decode('utf-8'))
+    db.session.add(newReq)
+    db.session.commit()
+    return "OKAY";
+
 @app.route('/',methods = ['GET','POST'])
 def home():
-    print(request.method)
-    print(request.url)
-    print(request.headers)
-    print(request.data)
-    print(dict(request.args))
-
-    if request.method == "POST":
-        return "OKAY";
-    else:
-        allReq = GetData.query.all()
-        return render_template('xivpvp.html', data=allReq)
+    allReq = GetData.query.all()
+    return render_template('xivpvp.html', data=allReq)
 
 @app.route('/<req>',methods = ['GET','POST'])
 def req(req):
@@ -37,14 +44,11 @@ def req(req):
     print(request.data)
     print(dict(request.args))
 
-    if request.method == "POST":
-        return "OKAY";
-    else:
-        newReq = GetData(contents=req, data=str(request.data))
-        db.session.add(newReq)
-        db.session.commit()
-        allReq = GetData.query.all()
-        return render_template('xivpvp.html', data=allReq)
+    newReq = GetData(contents=req, data=str(request.data))
+    db.session.add(newReq)
+    db.session.commit()
+    allReq = GetData.query.all()
+    return render_template('xivpvp.html', data=allReq)
 
 @app.route('/del_data/<int:id>')
 def del_data(id):
