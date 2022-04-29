@@ -21,7 +21,7 @@ def frontline():
     newReq = GetData(contents='frontline', data=request.get_data().decode('utf-8'))
     db.session.add(newReq)
     db.session.commit()
-    return "OKAY";
+    return "OKAY_"+str( db.session.query(GetData).count());
 
 @app.route('/wolvesden/',methods =['POST'])
 def wolvesden():
@@ -29,7 +29,7 @@ def wolvesden():
     newReq = GetData(contents=frontline, data=request.get_data().decode('utf-8'))
     db.session.add(newReq)
     db.session.commit()
-    return "OKAY";
+    return "OKAY_"+str( db.session.query(GetData).count());
 
 @app.route('/',methods = ['GET','POST'])
 def home():
@@ -38,17 +38,21 @@ def home():
 
 @app.route('/<req>',methods = ['GET','POST'])
 def req(req):
-    print(request.method)
-    print(request.url)
-    print(request.headers)
-    print(request.data)
-    print(dict(request.args))
+    if req !='favicon.ico':
+        print(request.method)
+        print(request.url)
+        print(request.headers)
+        print(request.data)
+        print(dict(request.args))
 
-    newReq = GetData(contents=req, data=str(request.data))
-    db.session.add(newReq)
-    db.session.commit()
-    allReq = GetData.query.all()
-    return render_template('xivpvp.html', data=allReq)
+        newReq = GetData(contents=req, data=request.get_data().decode('utf-8'))
+        db.session.add(newReq)
+        db.session.commit()
+        allReq = GetData.query.all()
+        return render_template('xivpvp.html', data=allReq)
+    else:
+        allReq = GetData.query.all()
+        return render_template('xivpvp.html', data=allReq)
 
 @app.route('/del_data/<int:id>')
 def del_data(id):
